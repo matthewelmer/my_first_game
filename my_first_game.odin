@@ -9,6 +9,7 @@ SCREEN_HEIGHT :: 720
 BACKGROUND_COLOR :: rl.Color{110, 184, 168, 255}
 
 PLAYER_START_POS :: rl.Vector2{640, 320}
+PLAYER_HEIGHT :: 64
 PLAYER_SPEED :: 400
 PLAYER_JUMP_STRENGTH :: 600
 PLAYER_RUN_NUM_FRAMES :: 4
@@ -45,9 +46,9 @@ main :: proc() {
 
 update_game :: proc() {
     // Physics.
-    if player_pos.y >= f32(rl.GetScreenHeight()) - 64 {
+    if player_pos.y >= f32(rl.GetScreenHeight()) - PLAYER_HEIGHT {
         player_grounded = true
-        player_pos.y = f32(rl.GetScreenHeight()) - 64
+        player_pos.y = f32(rl.GetScreenHeight()) - PLAYER_HEIGHT
         player_vel.y = 0
     } else {
         player_grounded = false
@@ -102,8 +103,8 @@ draw_game :: proc() {
     draw_player_dest := rl.Rectangle {
         x = player_pos.x,
         y = player_pos.y,
-        width = player_run_width * 4 / f32(PLAYER_RUN_NUM_FRAMES),
-        height = player_run_height * 4,
+        width = player_run_width / f32(PLAYER_RUN_NUM_FRAMES) * PLAYER_HEIGHT / player_run_height,
+        height = player_run_height * PLAYER_HEIGHT / player_run_height,
     }
 
     rl.DrawTexturePro(player_run_texture, draw_player_source, draw_player_dest, 0, 0, rl.WHITE)
